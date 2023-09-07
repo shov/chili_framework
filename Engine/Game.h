@@ -23,6 +23,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Player.h"
 
 class Game
 {
@@ -30,16 +31,18 @@ public:
 	Game( class MainWindow& wnd );
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
+	static constexpr bool TEST = false;
 	void Go();
 private:
 	void ComposeFrame();
 	void UpdateModel();
 	/********************************/
-	/*  User Functions              */
+	/*  User Functions              */ 
 	/********************************/
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+	Player player;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
