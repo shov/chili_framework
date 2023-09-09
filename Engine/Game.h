@@ -23,7 +23,6 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-#include "Player.h"
 
 class Game
 {
@@ -42,8 +41,10 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	Player player;
 	/********************************/
 	/*  User Variables              */
+	int x0, y0 = 0;
+	int x1, y1 = 0;
+	bool mousePressed = false;
 	/********************************/
 };

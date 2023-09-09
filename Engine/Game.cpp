@@ -43,11 +43,27 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	player.Update(wnd.kbd, wnd.mouse);
+	if (wnd.mouse.LeftIsPressed() && !mousePressed) {
+		x0 = wnd.mouse.GetPosX();
+		y0 = wnd.mouse.GetPosY();
+		mousePressed = true;
+	}
+
+	if (wnd.mouse.LeftIsPressed() && mousePressed) {
+		x1 = wnd.mouse.GetPosX();
+		y1 = wnd.mouse.GetPosY();
+	}
+
+	if (!wnd.mouse.LeftIsPressed()) {
+		mousePressed = false;
+		x0 = x1 = y0 = y1 = 0;
+	}
 }
 
 void Game::ComposeFrame()
 {
-	player.Render(gfx);
+	if (mousePressed) {
+		gfx.DrawRect(x0, y0, x1, y1, { 255, 100, 150 });
+	}
 }
 
