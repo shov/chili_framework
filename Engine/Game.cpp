@@ -26,11 +26,28 @@
 #include <random>
 #include <chrono>
 
+
 Game::Game(MainWindow& wnd)
 	:
 	wnd(wnd),
-	gfx(wnd)
+	gfx(wnd),
+	brd(gfx),
+	rng(std::random_device()()),
+	snk(nullptr)
 {
+	std::uniform_int_distribution<int> yDist(0, brd.GetHeight() - 1);
+	std::uniform_int_distribution<int> xDist(0, brd.GetWidth() - 1);
+
+	Location snakeInit = { xDist(rng), yDist(rng) };
+	snk = new Snake(snakeInit);
+	snk->Grow();
+	Location l = { 1, 1 };
+	snk->MoveBy(l);
+}
+
+Game::~Game()
+{
+	delete snk;
 }
 
 void Game::Go()
@@ -43,27 +60,32 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (wnd.mouse.LeftIsPressed() && !mousePressed) {
-		x0 = wnd.mouse.GetPosX();
-		y0 = wnd.mouse.GetPosY();
-		mousePressed = true;
+	if (wnd.kbd.KeyIsPressed(VK_LEFT) == true)
+	{
+		Location loc = { -1, 0 };
+		snk->MoveBy(loc);
+	}
+	else if (wnd.kbd.KeyIsPressed(VK_RIGHT) == true)
+	{
+		Location loc = { 1, 0 };
+		snk->MoveBy(loc);
+	}
+	else if (wnd.kbd.KeyIsPressed(VK_UP) == true)
+	{
+		Location loc = { 0, -1 };
+		snk->MoveBy(loc);
+	}
+	else if (wnd.kbd.KeyIsPressed(VK_DOWN) == true)
+	{
+		Location loc = { 0, 1 };
+		snk->MoveBy(loc);
 	}
 
-	if (wnd.mouse.LeftIsPressed() && mousePressed) {
-		x1 = wnd.mouse.GetPosX();
-		y1 = wnd.mouse.GetPosY();
-	}
-
-	if (!wnd.mouse.LeftIsPressed()) {
-		mousePressed = false;
-		x0 = x1 = y0 = y1 = 0;
-	}
 }
 
 void Game::ComposeFrame()
 {
-	if (mousePressed) {
-		gfx.DrawRect(x0, y0, x1, y1, { 255, 100, 150 });
-	}
+	snk->Draw(brd);
+
 }
 

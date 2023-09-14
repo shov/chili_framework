@@ -20,14 +20,21 @@
  ******************************************************************************************/
 #pragma once
 
+#include <random>
+
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+
+#include "Board.h"
+
+#include "Snake.h"
 
 class Game
 {
 public:
 	Game( class MainWindow& wnd );
+	~Game();
 	Game( const Game& ) = delete;
 	Game& operator=( const Game& ) = delete;
 	static constexpr bool TEST = false;
@@ -43,8 +50,8 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-	int x0, y0 = 0;
-	int x1, y1 = 0;
-	bool mousePressed = false;
+	Board brd;
+	std::mt19937 rng;
+	Snake* snk;
 	/********************************/
 };
